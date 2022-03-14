@@ -24,8 +24,8 @@ Currently, they include the following:
 
 - `sbt-fatal-warnings` - turns on `-Xfatal-warnings`, runs a clean compilation on the given scope.
 - `sbt-unused-imports` - as above, but also adds the "unused imports" warning.
-- `sbt-scalafmt` - runs `scalafmtCheckAll`.
-- `sbt-wartremover` - runs the wartremover plugin.
+- `scalafmt-check` - runs `scalafmt --mode=changed --test`.
+- `scalfmt-autofix` - runs `scalafmt --mode=changed` and automatically stages the reformatted files.
 
 To add one or more of the hooks into your repo:
 
@@ -44,16 +44,14 @@ repos:
         args: [--scope={defaultScope}]
     -   id: sbt-unused-imports #includes fatal warnings, arguments optional
         args: [--scope={defaultScope}]
-    -   id: sbt-scalafmt
-    -   id: sbt-wartremover #arguments are optional
-        args: [--warts=Warts.unsafe, --scope={defaultScope}]
+    -   id: scalafmt-check
 ----
 +
 . Run `pre-commit install` to apply your hooks to the repo.
 
 [NOTE]
 --
-All hooks except for `sbt-scalafmt` have the optional `scope` argument, which allows to define what source scopes
+All hooks except for `scalafmt-*` have the optional `scope` argument, which allows to define what source scopes
 are relevant for the hook's check. The default is `{defaultScope}`.
 --
 

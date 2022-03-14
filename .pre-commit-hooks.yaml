@@ -14,19 +14,24 @@
   pass_filenames: false
   always_run: true
   minimum_pre_commit_version: '0.19.0'
-- id: sbt-scalafmt
-  name: scalafmt formatting check
+- id: scalafmt-check
+  name: scalafmt check formatting
+  description: Validate code formatting with scalafmt
+  entry: scalafmt --test
+  args: [--mode=changed]
+  language: system
   stages: [commit,push]
-  language: python_venv
-  entry: scalafmt
-  pass_filenames: false
   always_run: true
-  minimum_pre_commit_version: '0.19.0'
-- id: sbt-wartremover
-  name: Scala WartRemover plugin check
-  language: python_venv
-  stages: [commit,push]
-  entry: sbt-wartremover
   pass_filenames: false
+  minimum_pre_commit_version: '2.8.0'
+- id: scalafmt-autofix
+  name: scalafmt format code
+  description: Automatically fix code formatting with scalafmt
+  entry: ./shell/scalafmt-autofix.sh
+  args: [--mode=changed]
+  language: script
+  stages: [commit]
   always_run: true
-  minimum_pre_commit_version: '0.19.0'
+  pass_filenames: false
+  require_serial: true
+  minimum_pre_commit_version: '2.8.0'
