@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1beta1
+kind: Component
+metadata:
+  name: scala-pre-commit-hooks
+  description: Pre-commit/Pre-push hooks for Scala.
+  annotations:
+    github.com/project-slug: dixahq/scala-pre-commit-hooks
+  tags:
+    - scala
+spec:
+  type: library
+  lifecycle: production
+  owner: dixahq-backend-conversations
