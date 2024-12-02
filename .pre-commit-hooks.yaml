@@ -1,7 +1,7 @@
 - id: sbt-fatal-warnings
   name: Scala fatal warnings
   stages: [commit,push]
-  language: python_venv
+  language: python
   entry: sbt-fatal-warnings
   pass_filenames: false
   always_run: true
@@ -9,7 +9,7 @@
 - id: sbt-unused-imports
   name: Scala unused imports (+ fatal warnings)
   stages: [commit,push]
-  language: python_venv
+  language: python
   entry: sbt-fatal-warnings --add_arg='-Ywarn-unused-import'
   pass_filenames: false
   always_run: true
