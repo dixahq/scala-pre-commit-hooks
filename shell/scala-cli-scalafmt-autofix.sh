@@ -1,16 +1,10 @@
 #!/bin/bash
 
-CMD="scala-cli format"
-BETTER_ARGS=""
-for word in $@
-do
-	BETTER_ARGS="${BETTER_ARGS} -F '$word'"
-done
+CMD="scala-cli format -F --mode=changed"
 
-FORMAT_CMD="$CMD $BETTER_ARGS"
 echo "Formatting..."
-echo "$FORMAT_CMD"
-eval "$FORMAT_CMD"
+echo "$CMD"
+eval "$CMD"
 
 FILES_TO_STAGE=$(git diff --cached --name-only)
 echo "Staging files:"

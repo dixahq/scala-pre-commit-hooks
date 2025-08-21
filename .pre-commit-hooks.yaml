@@ -39,7 +39,6 @@
   name: scalafmt format code via scala-cli
   description: Formats staged changes with scalafmt (via scala-cli) and re-stages them.
   entry: ./shell/scala-cli-scalafmt-autofix.sh
-  args: [--mode=changed]
   language: script
   stages: [pre-commit]
   always_run: true
