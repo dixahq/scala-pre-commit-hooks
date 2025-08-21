@@ -37,7 +37,7 @@
   minimum_pre_commit_version: '2.8.0'
 - id: scala-cli-scalafmt-autofix
   name: scalafmt format code via scala-cli
-  description: Automatically fix code formatting with scalafmt via scala-cli
+  description: Formats staged changes with scalafmt (via scala-cli) and re-stages them.
   entry: ./shell/scala-cli-scalafmt-autofix.sh
   args: [--mode=changed]
   language: script
