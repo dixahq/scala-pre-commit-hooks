@@ -6,6 +6,9 @@ echo "Formatting..."
 echo "scalafmt $@"
 scalafmt $@
 
+FILES_TO_STAGE=$(git diff --cached --name-only --diff-filter=d)
 echo "Staging files:"
-echo $FILES_TO_FORMAT
-git add $FILES_TO_FORMAT
+echo $FILES_TO_STAGE
+if [ -n "${FILES_TO_STAGE}" ]; then
+	git add $FILES_TO_STAGE
+fi
