@@ -1,6 +1,4 @@
-= `pre-commit` hooks for Scala
-
-NOTE: This repository is archived. Use local hooks instead (see below).
+:warning: This repository is archived. Use local hooks instead (see below).
 
 == Recommended: Local hooks
 
