@@ -1,8 +1,4 @@
-:warning: This repository is archived. Use local hooks instead (see below).
-
-== Recommended: Local hooks
-
-Instead of depending on this repository, define hooks locally in your `.pre-commit-config.yaml`. This avoids the `scalafmt-cli` dependency and the `--mode=changed` issues with renamed files.
+⚠️ This repository is archived. Instead of depending on this repository, define hooks locally in your `.pre-commit-config.yaml`.
 
 === scalafmt via sbt (recommended for sbt projects)
 
