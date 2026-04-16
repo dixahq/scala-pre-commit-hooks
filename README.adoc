@@ -1,57 +1,63 @@
 = `pre-commit` hooks for Scala
 
+NOTE: This repository is archived. Use local hooks instead (see below).
 
-Scala has a quite rich build ecosystem, and a myriad of tools to help you writ good code. However, the build system(s) are relatively slow, so any helpers executed via those build system run the risk of interrupting the flow of a developer.
+== Recommended: Local hooks
 
-Moreover, some of the code quality tools/features (like unused import checks) are actively in opposition to a "run-often" coding approach.
+Instead of depending on this repository, define hooks locally in your `.pre-commit-config.yaml`. This avoids the `scalafmt-cli` dependency and the `--mode=changed` issues with renamed files.
 
-Moving relevant checks to the pre-commit/pre-push phases partially alleviates those two issues.
+=== scalafmt via sbt (recommended for sbt projects)
 
-== How
+[source,yaml]
+----
+repos:
+  - repo: local
+    hooks:
+      - id: scalafmt
+        name: scalafmt
+        entry: bash -c 'sbt --batch --no-colors scalafmtSbt scalafmtAll && git add "$@"' --
+        language: system
+        files: '\.(scala|sbt)$'
+        stages: [pre-commit]
+----
 
-This is a set of hooks defined in the excellent https://pre-commit.com/[pre-commit] library.
+This runs `sbt scalafmtAll` when `.scala` or `.sbt` files are staged, then re-stages only those files. Works reliably with renames and deletions.
 
-Currently, they include the following:
+=== scalafmt via CLI
+
+If you have https://scalameta.org/scalafmt/docs/installation.html#cli[scalafmt-cli] installed:
+
+[source,yaml]
+----
+repos:
+  - repo: local
+    hooks:
+      - id: scalafmt
+        name: scalafmt
+        entry: bash -c 'scalafmt "$@" && git add "$@"' --
+        language: system
+        files: '\.(scala|sbt)$'
+        stages: [pre-commit]
+----
+
+== Legacy hooks (this repository)
+
+The hooks below are still functional but no longer maintained.
 
 - `sbt-fatal-warnings` - turns on `-Xfatal-warnings`, runs a clean compilation on the given scope.
 - `sbt-unused-imports` - as above, but also adds the "unused imports" warning.
 - `scalafmt-check` - runs `scalafmt --mode=changed --test`.
-- `scalfmt-autofix` - runs `scalafmt --mode=changed` and automatically stages the reformatted files.
+- `scalafmt-autofix` - runs `scalafmt --mode=changed` and automatically stages the reformatted files.
 
-Note1: All hooks except for `scalafmt-*` have the optional `scope` argument, which allows to define what source scopes are relevant for the hook's check. The default is `{defaultScope}`.
+Known issue: `--mode=changed` fails when staged files include renames (`git mv`).
 
-Note2: `scalafmt-*` hooks require [`scalafmt-cli` to be installed](https://scalameta.org/scalafmt/docs/installation.html#cli).
+=== Legacy usage
 
-== Usage
-
-To add one or more of the hooks into your repo:
-
-. Have everyone on your team install https://pre-commit.com/#install[pre-commit]
-. *Install `scalafmt-cli` for `scalafmt-*` hooks: https://scalameta.org/scalafmt/docs/installation.html#cli
-. Add a `.pre-commit-config.yaml` file to your repository, with the following syntax:
-+
-[source,yaml, subs="attributes"]
-..pre-commit-config.yaml
+[source,yaml]
 ----
-# See https://pre-commit.com/hooks.html for more hooks
-# See https://pre-commit.com for more information
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
-    hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
   - repo: https://github.com/dixahq/scala-pre-commit-hooks
+    rev: v0.9.2
     hooks:
-    rev: {currentVersion}
-      - id: sbt-fatal-warnings
-        stages: [push] # or [commit, push] etc.
-      - id: scalafmt-check
+      - id: scalafmt-autofix
 ----
-+
-. Run `pre-commit install` to apply your hooks to the repo.
-
-
-=== How to control hook run time
-
-By default, the hooks defined here run on *both* pre-commit and pre-push. They do, however, require some time to get running on large codebases, especially since each hook's execution is essentially a clean build.
